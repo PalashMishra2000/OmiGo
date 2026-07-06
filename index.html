@@ -7,7 +7,7 @@
 <style>
 * { box-sizing:border-box; margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
 body { background:#f7f9f9; }
-#omigo { background:#f7f9f9; max-width:380px; margin:0 auto; overflow:hidden; min-height:100vh; }
+#omigo { background:#f7f9f9; max-width:380px; margin:0 auto; overflow:hidden; min-height:100vh; position:relative; }
 .screen { display:none; flex-direction:column; min-height:100vh; }
 .screen.active { display:flex; animation:fadeIn 0.25s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
@@ -20,15 +20,15 @@ body { background:#f7f9f9; }
   border:none; outline:none;
 }
 .btn:active { transform:scale(0.97); }
-/* Blue = seniors */
 .btn-blue { background:#49c6cc; color:#fff; }
 .btn-blue:hover { filter:brightness(0.92); }
-/* Orange = helpers/students */
 .btn-orange { background:#fd8a5e; color:#fff; }
 .btn-orange:hover { filter:brightness(0.92); }
 .btn-gray { background:#d0dede; color:#a0b4b4; cursor:not-allowed; pointer-events:none; }
 .btn-outline { background:#fff; color:#49c6cc; border:2.5px solid #49c6cc; }
 .btn-outline:hover { background:#eafafb; }
+.btn-outline-orange { background:#fff; color:#fd8a5e; border:2.5px solid #fd8a5e; }
+.btn-outline-orange:hover { background:#fff4ef; }
 .btn-white { background:rgba(255,255,255,0.25); color:#fff; border:2.5px solid rgba(255,255,255,0.6); }
 .btn-white:hover { background:rgba(255,255,255,0.35); }
 .btn-wrap { padding:0 20px 24px; display:flex; flex-direction:column; gap:12px; }
@@ -39,20 +39,23 @@ body { background:#f7f9f9; }
 .topbar { background:#fff; border-bottom:1px solid #e0eeee; padding:14px 20px; display:flex; align-items:center; gap:12px; flex-shrink:0; }
 .topbar-title { font-size:17px; font-weight:700; color:#1a2a2a; }
 
-/* Hero gradient: blue → orange */
 .hero { background:linear-gradient(145deg,#49c6cc 0%,#6dd4d8 50%,#fd8a5e 100%); padding:36px 24px 28px; text-align:center; }
 .logo-name { font-size:34px; font-weight:800; color:#fff; letter-spacing:-0.5px; margin-top:10px; }
 .logo-name span { color:#ffe4d8; }
 .hero-sub { font-size:15px; color:rgba(255,255,255,0.88); margin-top:6px; }
 
-/* Role cards — blue = senior, orange = student */
+/* Login */
+.login-body { padding:28px 20px; display:flex; flex-direction:column; gap:18px; flex:1; }
+.login-title { font-size:21px; font-weight:800; color:#1a2a2a; }
+.login-sub { font-size:14px; color:#6b8080; line-height:1.5; margin-top:-8px; }
+.input-group { display:flex; flex-direction:column; gap:7px; }
+.input-label { font-size:13px; font-weight:600; color:#6b8080; }
+.input-field { width:100%; padding:14px 16px; border-radius:12px; border:2px solid #e0eeee; font-size:16px; color:#1a2a2a; background:#fff; outline:none; }
+.input-field:focus { border-color:#49c6cc; }
+
+/* Role cards */
 .role-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:24px 20px; flex:1; align-content:center; }
-.role-card {
-  border-radius:20px; border:2.5px solid; padding:28px 16px;
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  cursor:pointer; user-select:none;
-  transition:transform 0.1s, filter 0.15s;
-}
+.role-card { border-radius:20px; border:2.5px solid; padding:28px 16px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; user-select:none; transition:transform 0.1s, filter 0.15s; }
 .role-card:active { transform:scale(0.96); }
 .role-card:hover { filter:brightness(0.95); }
 .role-card-senior { background:#eafafb; border-color:#49c6cc; }
@@ -61,7 +64,7 @@ body { background:#f7f9f9; }
 .role-label { font-size:15px; font-weight:700; color:#1a2a2a; text-align:center; }
 .role-sub { font-size:12px; color:#6b8080; text-align:center; line-height:1.4; }
 
-/* Senior task screen — blue accents */
+/* Tasks */
 .section-title { font-size:19px; font-weight:700; color:#1a2a2a; padding:20px 20px 10px; }
 .task-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 20px 16px; }
 .task-card { background:#fff; border-radius:16px; border:2.5px solid #e0eeee; padding:18px 10px 14px; display:flex; flex-direction:column; align-items:center; gap:7px; cursor:pointer; user-select:none; transition:border-color 0.2s,background 0.2s,transform 0.1s; }
@@ -77,13 +80,13 @@ body { background:#f7f9f9; }
 .date-input { width:100%; padding:14px 16px; border-radius:12px; border:2px solid #e0eeee; font-size:16px; font-weight:600; color:#1a2a2a; background:#fff; outline:none; }
 .date-input:focus { border-color:#49c6cc; }
 
-/* Helper cards — orange accents (helpers = orange) */
+/* Helper list */
 .helpers-list { padding:0 20px; display:flex; flex-direction:column; gap:12px; }
 .helper-card { background:#fff; border-radius:16px; border:2.5px solid #e0eeee; padding:14px; display:flex; gap:12px; align-items:center; cursor:pointer; user-select:none; transition:border-color 0.2s,background 0.2s; }
 .helper-card:hover { border-color:#fd8a5e; background:#fff4ef; }
 .helper-card.selected { border-color:#fd8a5e; background:#fff4ef; }
 .helper-avatar { width:56px; height:56px; border-radius:50%; overflow:hidden; flex-shrink:0; }
-.helper-avatar svg { width:56px; height:56px; border-radius:50%; }
+.helper-avatar svg { width:56px; height:56px; border-radius:50%; display:block; }
 .helper-info { flex:1; }
 .helper-name { font-size:15px; font-weight:700; color:#1a2a2a; }
 .helper-age { font-size:12px; color:#6b8080; margin-top:1px; }
@@ -91,6 +94,22 @@ body { background:#f7f9f9; }
 .stars { color:#f5b400; font-size:13px; }
 .rating { font-size:12px; font-weight:700; color:#1a2a2a; }
 .dist { font-size:11px; color:#6b8080; background:#eafafb; padding:2px 7px; border-radius:20px; }
+
+/* Helper profile */
+.profile-hero { background:#fff; display:flex; flex-direction:column; align-items:center; padding:24px 20px 20px; border-bottom:1px solid #f0f5f5; }
+.profile-avatar-lg { width:90px; height:90px; border-radius:50%; overflow:hidden; border:3px solid #fd8a5e; }
+.profile-avatar-lg svg { width:90px; height:90px; display:block; }
+.profile-name-lg { font-size:22px; font-weight:800; color:#1a2a2a; margin-top:12px; }
+.profile-age-lg { font-size:13px; color:#6b8080; margin-top:3px; }
+.profile-meta-lg { display:flex; gap:10px; align-items:center; margin-top:10px; }
+.divider { height:8px; background:#f0f4f4; }
+.profile-section { padding:16px 20px 4px; }
+.profile-section-title { font-size:12px; font-weight:700; color:#6b8080; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px; }
+.profile-bio { font-size:14px; color:#1a2a2a; line-height:1.65; }
+.review-item { background:#f7f9f9; border-radius:12px; padding:12px 14px; margin-bottom:8px; }
+.review-stars { font-size:12px; color:#f5b400; }
+.review-text { font-size:13px; color:#1a2a2a; margin-top:3px; line-height:1.5; }
+.review-author { font-size:11px; color:#6b8080; margin-top:4px; font-style:italic; }
 
 /* Confirm */
 .confirm-box { background:#fff; border-radius:18px; border:1px solid #e0eeee; margin:14px 20px 0; padding:18px; }
@@ -100,17 +119,14 @@ body { background:#f7f9f9; }
 .confirm-value { font-weight:700; color:#1a2a2a; text-align:right; }
 .confirm-date-input { padding:6px 10px; border-radius:8px; border:1.5px solid #e0eeee; font-size:14px; font-weight:600; color:#1a2a2a; background:#f7f9f9; outline:none; }
 .confirm-date-input:focus { border-color:#49c6cc; background:#fff; }
-
-/* Price breakdown */
-.price-breakdown { background:#e2f7f8; border-radius:14px; margin:12px 20px 0; padding:14px 16px; display:flex; flex-direction:column; gap:0; }
+.price-breakdown { background:#e2f7f8; border-radius:14px; margin:12px 20px 0; padding:14px 16px; display:flex; flex-direction:column; }
 .price-line { display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:#2db5bb; border-bottom:1px solid rgba(73,198,204,0.15); }
-.price-line:last-child { border-bottom:none; }
 .price-line span:last-child { font-weight:600; }
 .price-total { display:flex; justify-content:space-between; padding:10px 0 0; margin-top:6px; border-top:2px solid rgba(73,198,204,0.3); }
 .price-total span:first-child { font-size:15px; font-weight:700; color:#1e9aa0; }
 .price-total span:last-child { font-size:20px; font-weight:800; color:#1e9aa0; }
 
-/* Success screens */
+/* Success */
 .success-screen { background:linear-gradient(145deg,#49c6cc 0%,#6dd4d8 60%,#fd8a5e 100%); flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; gap:18px; text-align:center; }
 .success-icon { width:86px; height:86px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:42px; }
 .success-title { font-size:28px; font-weight:800; color:#fff; }
@@ -118,7 +134,23 @@ body { background:#f7f9f9; }
 .success-card { background:rgba(255,255,255,0.2); border-radius:16px; padding:16px 20px; width:100%; text-align:left; }
 .success-card p { font-size:14px; color:#fff; line-height:1.9; }
 
-/* Student availability — orange accents */
+/* Rating */
+.rating-header { background:linear-gradient(135deg,#49c6cc,#6dd4d8); padding:28px 20px 24px; text-align:center; }
+.rating-avatar-wrap { width:70px; height:70px; border-radius:50%; overflow:hidden; border:3px solid rgba(255,255,255,0.6); margin:0 auto 10px; }
+.rating-avatar-wrap svg { width:70px; height:70px; display:block; }
+.rating-helper-name { font-size:18px; font-weight:800; color:#fff; }
+.rating-prompt { font-size:13px; color:rgba(255,255,255,0.85); margin-top:3px; }
+.star-row { display:flex; justify-content:center; gap:6px; padding:22px 20px 8px; }
+.star-btn { font-size:38px; cursor:pointer; opacity:0.25; transition:opacity 0.12s, transform 0.1s; user-select:none; }
+.star-btn.lit { opacity:1; }
+.star-btn:hover { opacity:0.7; }
+.star-btn:active { transform:scale(0.88); }
+.rating-comment { padding:8px 20px 0; }
+.rating-comment textarea { width:100%; padding:12px 14px; border-radius:12px; border:2px solid #e0eeee; font-size:14px; color:#1a2a2a; background:#fff; outline:none; resize:none; font-family:inherit; line-height:1.5; }
+.rating-comment textarea:focus { border-color:#49c6cc; }
+.rating-note { padding:8px 20px 0; font-size:12px; color:#6b8080; text-align:center; }
+
+/* Student availability */
 .avail-section { padding:0 20px; display:flex; flex-direction:column; gap:10px; }
 .day-row { background:#fff; border-radius:14px; border:1.5px solid #e0eeee; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .day-row.day-active { border-color:#fd8a5e; background:#fff4ef; }
@@ -129,27 +161,70 @@ body { background:#f7f9f9; }
 .tog-on { background:#fd8a5e; justify-content:flex-end; }
 .tog-off { background:#ccc; justify-content:flex-start; }
 .tog-knob { width:18px; height:18px; background:#fff; border-radius:50%; }
-
 .avail-date-section { padding:12px 20px 4px; }
 .avail-date-label { font-size:13px; font-weight:600; color:#6b8080; margin-bottom:6px; }
+
+/* Toast */
+.toast {
+  position:fixed; top:0; left:50%; transform:translateX(-50%) translateY(-110%);
+  max-width:380px; width:100%; background:#1a2a2a; color:#fff;
+  padding:14px 18px; display:flex; align-items:center; gap:10px;
+  font-size:14px; font-weight:600; z-index:999;
+  border-radius:0 0 16px 16px; box-shadow:0 4px 20px rgba(0,0,0,0.18);
+  transition:transform 0.45s cubic-bezier(0.34,1.4,0.64,1);
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast-icon { font-size:22px; flex-shrink:0; }
+.toast-msg { flex:1; }
 </style>
 </head>
 <body>
 <div id="omigo">
 
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">🚀</div>
+    <div class="toast-msg"></div>
+  </div>
+
+  <!-- SCREEN: LOGIN -->
+  <div id="screen-login" class="screen active">
+    <div class="hero" style="padding:28px 24px 22px">
+      <img src="./OmiGO_Logo.png" alt="OmiGo Logo" style="width:100px;height:100px;object-fit:contain;filter:drop-shadow(0 4px 14px rgba(0,0,0,0.22));border-radius:18px;"/>
+      <div class="logo-name">Omi<span>Go</span></div>
+      <p class="hero-sub">Hilfe im Alltag — einfach &amp; sicher</p>
+    </div>
+    <div class="login-body">
+      <div>
+        <div class="login-title">Willkommen!</div>
+        <div class="login-sub" style="margin-top:6px">Bitte geben Sie Ihren Namen und Ihre Postleitzahl ein, um loszulegen.</div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Ihr Name</div>
+        <input class="input-field" id="login-name" type="text" placeholder="z.B. Maria Müller" oninput="checkLogin()"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Postleitzahl</div>
+        <input class="input-field" id="login-plz" type="text" placeholder="z.B. 80331" maxlength="5" oninput="checkLogin()"/>
+      </div>
+      <div class="btn btn-gray" id="login-btn" onclick="doLogin()" style="margin-top:4px">Los geht's →</div>
+      <div style="font-size:12px;color:#a0b4b4;text-align:center;margin-top:-4px">Ihre Daten werden sicher gespeichert.</div>
+    </div>
+  </div>
+
   <!-- SCREEN: ROLE SELECTION -->
-  <div id="screen-role" class="screen active">
+  <div id="screen-role" class="screen">
     <div class="hero">
       <svg width="76" height="76" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="lg0" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#49c6cc"/>
             <stop offset="100%" stop-color="#fd8a5e"/>
           </linearGradient>
-          <clipPath id="cp0"><rect width="120" height="120" rx="28"/></clipPath>
+          <clipPath id="cp1"><rect width="120" height="120" rx="28"/></clipPath>
         </defs>
-        <rect width="120" height="120" rx="28" fill="url(#lg0)"/>
-        <g clip-path="url(#cp0)">
+        <rect width="120" height="120" rx="28" fill="url(#lg1)"/>
+        <g clip-path="url(#cp1)">
           <ellipse cx="60" cy="50" rx="20" ry="22" fill="#ffe0d0" stroke="white" stroke-width="3"/>
           <ellipse cx="60" cy="41" rx="14" ry="13" fill="#f5c5a8" stroke="white" stroke-width="2"/>
           <ellipse cx="60" cy="33" rx="12" ry="7" fill="#c0c0c0"/>
@@ -160,7 +235,7 @@ body { background:#f7f9f9; }
         </g>
       </svg>
       <div class="logo-name">Omi<span>Go</span></div>
-      <p class="hero-sub">Hilfe im Alltag — einfach &amp; sicher</p>
+      <p class="hero-sub" id="hero-greeting">Hilfe im Alltag — einfach &amp; sicher</p>
     </div>
     <div style="padding:20px 20px 4px;text-align:center;font-size:16px;font-weight:700;color:#1a2a2a">Wie kann OmiGo helfen?</div>
     <div class="role-grid">
@@ -170,9 +245,9 @@ body { background:#f7f9f9; }
         <div class="role-sub">Alltagsaufgaben einfach erledigen lassen</div>
       </div>
       <div class="role-card role-card-student" onclick="setRole('student')">
-        <div class="role-emoji">🎓</div>
+        <div class="role-emoji">🤝</div>
         <div class="role-label">Ich möchte helfen</div>
-        <div class="role-sub">Als Student Geld verdienen</div>
+        <div class="role-sub">Flexibel Geld verdienen</div>
       </div>
     </div>
   </div>
@@ -210,7 +285,7 @@ body { background:#f7f9f9; }
     <p class="section-title">Helfer auswählen</p>
     <div class="helpers-list">
 
-      <div class="helper-card" onclick="selectHelper(this,'Lena M.')">
+      <div class="helper-card" id="hcard-Lena M." onclick="openProfile('Lena M.')">
         <div class="helper-avatar">
           <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
             <circle cx="28" cy="28" r="28" fill="#d4eaf7"/>
@@ -237,12 +312,12 @@ body { background:#f7f9f9; }
         </div>
         <div class="helper-info">
           <div class="helper-name">Lena M.</div>
-          <div class="helper-age">22 Jahre · Medizinstudentin</div>
+          <div class="helper-age">22 Jahre · Helferin</div>
           <div class="helper-meta"><span class="stars">★★★★★</span><span class="rating">4.9</span><span class="dist">0,8 km</span></div>
         </div>
       </div>
 
-      <div class="helper-card" onclick="selectHelper(this,'Jonas K.')">
+      <div class="helper-card" id="hcard-Jonas K." onclick="openProfile('Jonas K.')">
         <div class="helper-avatar">
           <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
             <circle cx="28" cy="28" r="28" fill="#fde8d8"/>
@@ -269,12 +344,12 @@ body { background:#f7f9f9; }
         </div>
         <div class="helper-info">
           <div class="helper-name">Jonas K.</div>
-          <div class="helper-age">24 Jahre · BWL-Student</div>
+          <div class="helper-age">24 Jahre · Helfer</div>
           <div class="helper-meta"><span class="stars">★★★★★</span><span class="rating">4.7</span><span class="dist">1,2 km</span></div>
         </div>
       </div>
 
-      <div class="helper-card" onclick="selectHelper(this,'Sara T.')">
+      <div class="helper-card" id="hcard-Sara T." onclick="openProfile('Sara T.')">
         <div class="helper-avatar">
           <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
             <circle cx="28" cy="28" r="28" fill="#e8f5e9"/>
@@ -305,12 +380,12 @@ body { background:#f7f9f9; }
         </div>
         <div class="helper-info">
           <div class="helper-name">Sara T.</div>
-          <div class="helper-age">21 Jahre · Pädagogik-Studentin</div>
+          <div class="helper-age">21 Jahre · Helferin</div>
           <div class="helper-meta"><span class="stars">★★★★★</span><span class="rating">4.8</span><span class="dist">2,0 km</span></div>
         </div>
       </div>
 
-      <div class="helper-card" onclick="selectHelper(this,'Max B.')">
+      <div class="helper-card" id="hcard-Max B." onclick="openProfile('Max B.')">
         <div class="helper-avatar">
           <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
             <circle cx="28" cy="28" r="28" fill="#fdf4e0"/>
@@ -337,7 +412,7 @@ body { background:#f7f9f9; }
         </div>
         <div class="helper-info">
           <div class="helper-name">Max B.</div>
-          <div class="helper-age">23 Jahre · Informatik-Student</div>
+          <div class="helper-age">23 Jahre · Helfer</div>
           <div class="helper-meta"><span class="stars">★★★★☆</span><span class="rating">4.6</span><span class="dist">0,5 km</span></div>
         </div>
       </div>
@@ -345,6 +420,38 @@ body { background:#f7f9f9; }
     </div>
     <div class="btn-wrap" style="margin-top:18px">
       <div class="btn btn-gray" id="helper-next-btn" onclick="tryGoConfirm()">Weiter</div>
+    </div>
+  </div>
+
+  <!-- SENIOR: HELPER PROFILE -->
+  <div id="screen-helper-profile" class="screen">
+    <div class="topbar">
+      <div class="back" onclick="go('helpers')">&#8592; Zurück</div>
+      <span class="topbar-title">Helfer-Profil</span>
+    </div>
+    <div class="profile-hero">
+      <div class="profile-avatar-lg" id="profile-avatar"></div>
+      <div class="profile-name-lg" id="profile-name">—</div>
+      <div class="profile-age-lg" id="profile-age">—</div>
+      <div class="profile-meta-lg">
+        <span class="stars" id="profile-stars">★★★★★</span>
+        <span class="rating" id="profile-rating-val">—</span>
+        <span class="dist" id="profile-dist-val">—</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="profile-section">
+      <div class="profile-section-title">Über mich</div>
+      <div class="profile-bio" id="profile-bio">—</div>
+    </div>
+    <div class="divider" style="margin-top:12px"></div>
+    <div class="profile-section" style="padding-bottom:16px">
+      <div class="profile-section-title">Bewertungen</div>
+      <div id="profile-reviews"></div>
+    </div>
+    <div class="btn-wrap" style="margin-top:auto">
+      <div class="btn btn-orange" onclick="selectFromProfile()">Diesen Helfer auswählen</div>
+      <div class="btn btn-outline" onclick="go('helpers')">Zurück zur Liste</div>
     </div>
   </div>
 
@@ -372,27 +479,12 @@ body { background:#f7f9f9; }
         <span class="confirm-value">ca. 1–2 Stunden</span>
       </div>
     </div>
-
-    <!-- Price breakdown -->
     <div class="price-breakdown">
-      <div class="price-line">
-        <span>Helferhonorar</span>
-        <span>9,00 €</span>
-      </div>
-      <div class="price-line">
-        <span>Servicegebühr</span>
-        <span>2,00 €</span>
-      </div>
-      <div class="price-line">
-        <span>Versicherung</span>
-        <span>1,00 €</span>
-      </div>
-      <div class="price-total">
-        <span>Gesamt</span>
-        <span>12,00 €</span>
-      </div>
+      <div class="price-line"><span>Helferhonorar</span><span>9,00 €</span></div>
+      <div class="price-line"><span>Servicegebühr</span><span>2,00 €</span></div>
+      <div class="price-line" style="border-bottom:none"><span>Versicherung</span><span>1,00 €</span></div>
+      <div class="price-total"><span>Gesamt</span><span>12,00 €</span></div>
     </div>
-
     <div class="btn-wrap" style="margin-top:16px">
       <div class="btn btn-blue" onclick="go('success')">Jetzt buchen ✓</div>
       <div class="btn btn-outline" onclick="go('tasks')">Ändern</div>
@@ -408,11 +500,40 @@ body { background:#f7f9f9; }
       <div class="success-card">
         <p>📅 Datum: <strong id="s-date">—</strong><br>👤 Helfer: <span id="s-helper">—</span><br>📋 Aufgabe: <span id="s-task">—</span><br>💶 Betrag: 12,00 €</p>
       </div>
-      <div class="btn btn-white" style="margin-top:8px" onclick="go('role')">Zurück zur Startseite</div>
+      <div class="btn btn-white" onclick="go('rating')" style="margin-top:4px">⭐ Helfer bewerten</div>
+      <div class="btn btn-white" onclick="go('role')" style="margin-top:-6px;opacity:0.7;font-size:14px">Zur Startseite</div>
     </div>
   </div>
 
-  <!-- STUDENT: WHAT CAN YOU HELP WITH -->
+  <!-- SENIOR: RATING -->
+  <div id="screen-rating" class="screen">
+    <div class="topbar">
+      <div class="back" onclick="go('success')">&#8592; Zurück</div>
+      <span class="topbar-title">Bewertung</span>
+    </div>
+    <div class="rating-header">
+      <div class="rating-avatar-wrap" id="rating-avatar"></div>
+      <div class="rating-helper-name" id="rating-helper-name">—</div>
+      <div class="rating-prompt">Wie war Ihre Erfahrung?</div>
+    </div>
+    <div class="star-row">
+      <div class="star-btn" onclick="setRating(1)">★</div>
+      <div class="star-btn" onclick="setRating(2)">★</div>
+      <div class="star-btn" onclick="setRating(3)">★</div>
+      <div class="star-btn" onclick="setRating(4)">★</div>
+      <div class="star-btn" onclick="setRating(5)">★</div>
+    </div>
+    <div class="rating-note">Tippen Sie auf einen Stern</div>
+    <div class="rating-comment" style="margin-top:12px">
+      <div class="input-label" style="margin-bottom:6px">Kommentar (optional)</div>
+      <textarea id="rating-comment-text" rows="3" placeholder="Was hat besonders gut geklappt?"></textarea>
+    </div>
+    <div class="btn-wrap" style="margin-top:16px">
+      <div class="btn btn-gray" id="rating-submit-btn" onclick="submitRating()">Bewertung abschicken</div>
+    </div>
+  </div>
+
+  <!-- HELPER: WHAT CAN YOU HELP WITH -->
   <div id="screen-student-tasks" class="screen">
     <div class="topbar">
       <div class="back" onclick="go('role')">&#8592; Zurück</div>
@@ -433,32 +554,30 @@ body { background:#f7f9f9; }
     </div>
   </div>
 
-  <!-- STUDENT: AVAILABILITY -->
+  <!-- HELPER: AVAILABILITY -->
   <div id="screen-student" class="screen">
     <div class="topbar">
-      <div class="back" onclick="go('role')">&#8592; Zurück</div>
+      <div class="back" onclick="go('student-tasks')">&#8592; Zurück</div>
       <span class="topbar-title">Meine Verfügbarkeit</span>
     </div>
     <p class="section-title">Wann können Sie helfen?</p>
-    <div style="padding:0 20px 4px;font-size:13px;color:#6b8080">Tage einschalten und Uhrzeiten wählen:</div>
-
+    <div style="padding:0 20px 4px;font-size:13px;color:#6b8080">Wählen Sie Ihre freien Zeiten:</div>
     <div class="avail-date-section">
       <div class="avail-date-label">📅 Ab welchem Datum verfügbar?</div>
-      <input type="date" class="date-input" id="stud-start-date" style="border-color:#e0eeee"/>
+      <input type="date" class="date-input" id="stud-start-date"/>
     </div>
-
     <div class="avail-section" id="avail-section" style="margin-top:10px"></div>
     <div class="btn-wrap" style="margin-top:20px">
       <div class="btn btn-orange" onclick="go('student-success')">Verfügbarkeit speichern</div>
     </div>
   </div>
 
-  <!-- STUDENT: SUCCESS -->
+  <!-- HELPER: SUCCESS -->
   <div id="screen-student-success" class="screen">
     <div class="success-screen" style="background:linear-gradient(145deg,#fd8a5e,#e86030)">
-      <div class="success-icon">🎓</div>
+      <div class="success-icon">🤝</div>
       <div class="success-title">Alles bereit!</div>
-      <div class="success-sub">Ihre Verfügbarkeit wurde gespeichert. Wir melden uns sobald eine Aufgabe passt!</div>
+      <div class="success-sub">Ihre Verfügbarkeit wurde gespeichert. Wir melden uns, sobald eine Aufgabe in Ihrer Nähe verfügbar ist!</div>
       <div class="success-card"><p id="stud-summary" style="font-size:13px;color:#fff;line-height:1.9"></p></div>
       <div class="btn btn-white" style="margin-top:8px" onclick="go('role')">Zurück zur Startseite</div>
     </div>
@@ -467,11 +586,204 @@ body { background:#f7f9f9; }
 </div>
 
 <script>
-var selTask=null, selHelper=null, studTasks=[];
+var selTask=null, selHelper=null, studTasks=[], currentProfile=null, ratingVal=0, userName='';
 var days=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 var dayState={};
 days.forEach(function(d){dayState[d]={on:false,from:'09:00',to:'17:00'};});
 
+var helperProfiles={
+  'Lena M.':{
+    stars:'★★★★★', rating:'4.9', dist:'0,8 km',
+    age:'22 Jahre · Helferin',
+    bio:'Hallo! Ich bin Lena, 22 Jahre alt und lebe in München-Schwabing. Ich helfe gerne älteren Menschen im Alltag – beim Einkaufen, Kochen oder einfach Gesellschaft leisten. Zuverlässigkeit ist mir sehr wichtig!',
+    reviews:[
+      {stars:'★★★★★', text:'Sehr aufmerksam und pünktlich. Hat alles eingekauft wie gewünscht!', author:'Hildegard K.'},
+      {stars:'★★★★★', text:'Wunderbare junge Frau, sehr geduldig und herzlich.', author:'Werner S.'}
+    ]
+  },
+  'Jonas K.':{
+    stars:'★★★★★', rating:'4.7', dist:'1,2 km',
+    age:'24 Jahre · Helfer',
+    bio:'Hallo, ich bin Jonas aus München. Ich bin kräftig, pünktlich und packe gerne an. Gartenarbeit und schwere Aufgaben mache ich besonders gerne. Ich bin zuverlässig und immer gut gelaunt.',
+    reviews:[
+      {stars:'★★★★★', text:'Hat super im Garten geholfen. Sehr fleißig und gründlich!', author:'Margret B.'},
+      {stars:'★★★★★', text:'Pünktlich, freundlich und sehr hilfsbereit. Gerne wieder!', author:'Klaus H.'}
+    ]
+  },
+  'Sara T.':{
+    stars:'★★★★★', rating:'4.8', dist:'2,0 km',
+    age:'21 Jahre · Helferin',
+    bio:'Ich bin Sara, aufgewachsen in einer großen Familie. Ich koche leidenschaftlich gerne und begleite Menschen herzlich zu Terminen oder beim Spaziergang. Ältere Menschen liegen mir am Herzen.',
+    reviews:[
+      {stars:'★★★★★', text:'Hat uns ein herrliches Mittagessen gekocht. Sehr empfehlenswert!', author:'Irmgard F.'},
+      {stars:'★★★★★', text:'Begleitung zum Arzt – sehr fürsorglich und aufmerksam.', author:'Gertrude M.'}
+    ]
+  },
+  'Max B.':{
+    stars:'★★★★☆', rating:'4.6', dist:'0,5 km',
+    age:'23 Jahre · Helfer',
+    bio:'Hi, ich bin Max! Technik ist meine Stärke – ich helfe gerne bei Handy, Tablet oder Computer. Ich erkläre alles geduldig und verständlich. Auch beim Einkaufen bin ich gerne dabei.',
+    reviews:[
+      {stars:'★★★★☆', text:'Hat mein Tablet komplett eingerichtet. Bin begeistert!', author:'Hans-Peter L.'},
+      {stars:'★★★★☆', text:'Sehr geduldig beim Erklären. Toller junger Helfer!', author:'Brigitte N.'}
+    ]
+  }
+};
+
+/* ── LOGIN ── */
+function checkLogin(){
+  var name=document.getElementById('login-name').value.trim();
+  var plz=document.getElementById('login-plz').value.trim();
+  var ok=name.length>=2 && plz.length>=4;
+  document.getElementById('login-btn').className=ok?'btn btn-blue':'btn btn-gray';
+}
+
+function doLogin(){
+  var name=document.getElementById('login-name').value.trim();
+  var plz=document.getElementById('login-plz').value.trim();
+  if(name.length<2||plz.length<4) return;
+  userName=name;
+  document.getElementById('hero-greeting').textContent='Hallo, '+name.split(' ')[0]+'! Wie können wir helfen?';
+  go('role');
+}
+
+/* ── NAVIGATION ── */
+function go(s){
+  document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active');});
+  document.getElementById('screen-'+s).classList.add('active');
+  window.scrollTo(0,0);
+
+  if(s==='confirm'){
+    document.getElementById('c-task').textContent=selTask||'—';
+    document.getElementById('c-helper').textContent=selHelper||'—';
+    document.getElementById('c-date-input').value=document.getElementById('task-date').value;
+  }
+  if(s==='success'){
+    var dv=document.getElementById('task-date').value;
+    document.getElementById('s-date').textContent=dv?fmtDate(dv):'—';
+    document.getElementById('s-helper').textContent=selHelper||'—';
+    document.getElementById('s-task').textContent=selTask||'—';
+    setTimeout(function(){showToast('👋 '+selHelper+' ist auf dem Weg!');}, 2000);
+  }
+  if(s==='rating'){
+    document.getElementById('rating-helper-name').textContent=selHelper||'—';
+    var ratingAv=document.getElementById('rating-avatar');
+    ratingAv.innerHTML='';
+    if(selHelper){
+      var srcAv=document.querySelector('#hcard-'+selHelper.replace('.','\\.')+' .helper-avatar svg');
+      if(srcAv){var cl=srcAv.cloneNode(true);cl.setAttribute('width','70');cl.setAttribute('height','70');ratingAv.appendChild(cl);}
+    }
+  }
+  if(s==='student-success'){
+    var sd=document.getElementById('stud-start-date').value;
+    var lines=(sd?'📅 Ab: '+fmtDate(sd)+'<br>':'');
+    if(studTasks.length) lines+='🛠 Aufgaben: '+studTasks.join(', ')+'<br>';
+    days.forEach(function(d){if(dayState[d].on)lines+='✅ '+d+': '+dayState[d].from+' – '+dayState[d].to+'<br>';});
+    document.getElementById('stud-summary').innerHTML=lines||'Keine Angaben gemacht.';
+  }
+}
+
+/* ── TOAST ── */
+var toastTimer=null;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.querySelector('.toast-msg').textContent=msg;
+  t.classList.add('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){t.classList.remove('show');},4000);
+}
+
+/* ── HELPER PROFILE ── */
+function openProfile(name){
+  currentProfile=name;
+  var p=helperProfiles[name];
+  document.getElementById('profile-name').textContent=name;
+  document.getElementById('profile-age').textContent=p.age;
+  document.getElementById('profile-stars').textContent=p.stars;
+  document.getElementById('profile-rating-val').textContent=p.rating;
+  document.getElementById('profile-dist-val').textContent=p.dist;
+  document.getElementById('profile-bio').textContent=p.bio;
+  document.getElementById('profile-reviews').innerHTML=p.reviews.map(function(r){
+    return '<div class="review-item"><div class="review-stars">'+r.stars+'</div><div class="review-text">'+r.text+'</div><div class="review-author">— '+r.author+'</div></div>';
+  }).join('');
+  var avEl=document.getElementById('profile-avatar');
+  avEl.innerHTML='';
+  var srcSvg=document.querySelector('#hcard-'+name.replace('.','\\.')+' .helper-avatar svg');
+  if(srcSvg){var cl=srcSvg.cloneNode(true);cl.setAttribute('width','90');cl.setAttribute('height','90');avEl.appendChild(cl);}
+  go('helper-profile');
+}
+
+function selectFromProfile(){
+  document.querySelectorAll('.helper-card').forEach(function(c){c.classList.remove('selected');});
+  var card=document.getElementById('hcard-'+currentProfile);
+  if(card) card.classList.add('selected');
+  selHelper=currentProfile;
+  document.getElementById('helper-next-btn').className='btn btn-blue';
+  go('confirm');
+}
+
+/* ── RATING ── */
+function setRating(val){
+  ratingVal=val;
+  document.querySelectorAll('.star-btn').forEach(function(s,i){s.classList.toggle('lit',i<val);});
+  document.querySelector('.rating-note').textContent=val===5?'Ausgezeichnet! ✨':val>=4?'Sehr gut!':val>=3?'In Ordnung.':'Schade, danke für Ihr Feedback.';
+  document.getElementById('rating-submit-btn').className='btn btn-blue';
+}
+
+function submitRating(){
+  if(!ratingVal) return;
+  ratingVal=0;
+  document.querySelectorAll('.star-btn').forEach(function(s){s.classList.remove('lit');});
+  document.getElementById('rating-submit-btn').className='btn btn-gray';
+  document.getElementById('rating-comment-text').value='';
+  document.querySelector('.rating-note').textContent='Tippen Sie auf einen Stern';
+  showToast('Danke für Ihre Bewertung! ⭐');
+  go('role');
+}
+
+/* ── SENIOR FLOW ── */
+function setRole(role){
+  if(role==='senior'){
+    document.getElementById('task-date').value=new Date().toISOString().split('T')[0];
+    go('tasks');
+  } else {
+    studTasks=[];
+    document.querySelectorAll('.stud-task').forEach(function(c){c.classList.remove('stud-selected');});
+    document.getElementById('stud-task-next-btn').className='btn btn-gray';
+    go('student-tasks');
+  }
+}
+
+function selectTask(el,name){
+  document.querySelectorAll('.task-card:not(.stud-task)').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+  selTask=name;
+  document.getElementById('task-next-btn').className='btn btn-blue';
+}
+
+function tryGoHelpers(){if(selTask) go('helpers');}
+
+function tryGoConfirm(){if(selHelper) go('confirm');}
+
+function syncDate(val){document.getElementById('task-date').value=val;}
+
+/* ── HELPER FLOW ── */
+function toggleStudTask(el,name){
+  var idx=studTasks.indexOf(name);
+  if(idx===-1){studTasks.push(name);el.classList.add('stud-selected');}
+  else{studTasks.splice(idx,1);el.classList.remove('stud-selected');}
+  document.getElementById('stud-task-next-btn').className=studTasks.length?'btn btn-orange':'btn btn-gray';
+}
+
+function tryGoStudAvail(){
+  if(studTasks.length){
+    document.getElementById('stud-start-date').value=new Date().toISOString().split('T')[0];
+    buildAvail();
+    go('student');
+  }
+}
+
+/* ── AVAILABILITY ── */
 function timeOpts(sel){
   var s='';
   for(var h=6;h<=22;h++){
@@ -492,7 +804,7 @@ function buildAvail(){
     row.className='day-row'+(st.on?' day-active':'');
     row.innerHTML=
       '<span class="day-name">'+d+'</span>'+
-      '<div class="time-selects" id="ts-'+d+'" style="'+(st.on?'':'opacity:0.3;pointer-events:none')+'">'+
+      '<div class="time-selects" style="'+(st.on?'':'opacity:0.3;pointer-events:none')+'">'+
         '<select class="time-sel" onchange="dayState[\''+d+'\'].from=this.value">'+timeOpts(st.from)+'</select>'+
         '<span style="font-size:11px;color:#6b8080">–</span>'+
         '<select class="time-sel" onchange="dayState[\''+d+'\'].to=this.value">'+timeOpts(st.to)+'</select>'+
@@ -502,92 +814,10 @@ function buildAvail(){
   });
 }
 
-function toggleDay(d){
-  dayState[d].on=!dayState[d].on;
-  buildAvail();
-}
+function toggleDay(d){dayState[d].on=!dayState[d].on;buildAvail();}
 
-function toggleStudTask(el,name){
-  var idx=studTasks.indexOf(name);
-  if(idx===-1){
-    studTasks.push(name);
-    el.classList.add('stud-selected');
-  } else {
-    studTasks.splice(idx,1);
-    el.classList.remove('stud-selected');
-  }
-  document.getElementById('stud-task-next-btn').className=studTasks.length?'btn btn-orange':'btn btn-gray';
-}
-
-function tryGoStudAvail(){
-  if(studTasks.length){
-    var t=new Date().toISOString().split('T')[0];
-    document.getElementById('stud-start-date').value=t;
-    buildAvail();
-    go('student');
-  }
-}
-
-function setRole(role){
-  if(role==='senior'){
-    var t=new Date().toISOString().split('T')[0];
-    document.getElementById('task-date').value=t;
-    go('tasks');
-  } else {
-    studTasks=[];
-    document.querySelectorAll('.stud-task').forEach(function(c){c.classList.remove('stud-selected');});
-    document.getElementById('stud-task-next-btn').className='btn btn-gray';
-    go('student-tasks');
-  }
-}
-
-function go(s){
-  document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active');});
-  document.getElementById('screen-'+s).classList.add('active');
-  if(s==='confirm'){
-    document.getElementById('c-task').textContent=selTask||'—';
-    document.getElementById('c-helper').textContent=selHelper||'—';
-    var dv=document.getElementById('task-date').value;
-    document.getElementById('c-date-input').value=dv;
-  }
-  if(s==='success'){
-    var dv=document.getElementById('task-date').value;
-    document.getElementById('s-date').textContent=dv?fmtDate(dv):'—';
-    document.getElementById('s-helper').textContent=selHelper||'—';
-    document.getElementById('s-task').textContent=selTask||'—';
-  }
-  if(s==='student-success'){
-    var sd=document.getElementById('stud-start-date').value;
-    var lines=(sd?'📅 Ab: '+fmtDate(sd)+'<br>':'');
-    if(studTasks.length) lines+='🛠 Aufgaben: '+studTasks.join(', ')+'<br>';
-    days.forEach(function(d){if(dayState[d].on)lines+='✅ '+d+': '+dayState[d].from+' – '+dayState[d].to+'<br>';});
-    document.getElementById('stud-summary').innerHTML=lines||'Keine Angaben gemacht.';
-  }
-}
-
-function syncDate(val){
-  document.getElementById('task-date').value=val;
-}
-
+/* ── UTILS ── */
 function fmtDate(s){var p=s.split('-');return p[2]+'.'+p[1]+'.'+p[0];}
-
-function selectTask(el,name){
-  document.querySelectorAll('.task-card').forEach(function(c){c.classList.remove('selected');});
-  el.classList.add('selected');
-  selTask=name;
-  document.getElementById('task-next-btn').className='btn btn-blue';
-}
-
-function tryGoHelpers(){if(selTask)go('helpers');}
-
-function selectHelper(el,name){
-  document.querySelectorAll('.helper-card').forEach(function(c){c.classList.remove('selected');});
-  el.classList.add('selected');
-  selHelper=name;
-  document.getElementById('helper-next-btn').className='btn btn-blue';
-}
-
-function tryGoConfirm(){if(selHelper)go('confirm');}
 
 document.getElementById('task-date').value=new Date().toISOString().split('T')[0];
 </script>
